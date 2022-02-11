@@ -1,7 +1,6 @@
 from flask import Blueprint, request,jsonify
 from website.services import getAccountTransactions
 from website.apiServices import getAllAccountsByCustomerId, getCustomerById
-from website.models import Account, Customer, Transaction
 from website.apiServices import _mapCustomerToApi, _mapTransactionToApi, getAllTransactionsByAccountId, _mapAccountToApi
 
 api = Blueprint('api', __name__)
