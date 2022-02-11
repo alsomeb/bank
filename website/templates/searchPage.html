@@ -1,0 +1,122 @@
+{% extends "baseTemplate.html" %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+<br/>
+<br/>
+<div class="returnLink">
+  <a class="cancel_deposit" href="{{ url_for('views.indexPage') }}">
+    <i class='bx bx-left-arrow-alt'></i>
+    Return to Dashboard
+  </a>
+</div>
+<h2 class="h2Start">Search Page</h2>
+<form class="search_form" method="GET">
+  <div class="input-group">
+    <input type="text" name="q" id="q" class="form-control" value="{{ q }}" placeholder="Name, Surname, City, Id..">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="submit">Search
+        <i class='bx bx-search-alt-2'></i>
+      </button>
+    </div>
+  </div>
+</form>
+<p>
+  <strong>Showing page {{ page }} of {{ pages }}</strong>
+</p>
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">
+        <i class='bx bx-detail' ></i>
+        Id
+        <a href="{{  url_for('views.searchPage',sortColumn='id',sortOrder='asc', q=q) }}">
+          <i class='bx bx-up-arrow-alt' ></i>
+        </a>
+        <a href="{{  url_for('views.searchPage',sortColumn='id',sortOrder='desc', q=q) }}">
+          <i class='bx bx-down-arrow-alt' ></i>
+        </a>
+      </th>
+      <th scope="col">
+        <i class='bx bx-detail' ></i>
+        Name
+        <a href="{{  url_for('views.searchPage',sortColumn='name',sortOrder='asc', q=q) }}">
+          <i class='bx bx-up-arrow-alt' ></i>
+        </a>
+        <a href="{{  url_for('views.searchPage',sortColumn='name',sortOrder='desc', q=q) }}">
+          <i class='bx bx-down-arrow-alt' ></i>
+        </a>
+      </th>
+      <th scope="col">
+        <i class='bx bx-home' ></i>
+        Address
+        <a href="{{  url_for('views.searchPage',sortColumn='address',sortOrder='asc', q=q) }}">
+          <i class='bx bx-up-arrow-alt' ></i>
+        </a>
+        <a href="{{  url_for('views.searchPage',sortColumn='address',sortOrder='desc', q=q) }}">
+          <i class='bx bx-down-arrow-alt' ></i>
+        </a>
+      </th>
+      <th scope="col">
+        <i class='bx bx-home' ></i>
+        City
+        <a href="{{  url_for('views.searchPage',sortColumn='city',sortOrder='asc', q=q) }}">
+          <i class='bx bx-up-arrow-alt' ></i>
+        </a>
+        <a href="{{  url_for('views.searchPage',sortColumn='city',sortOrder='desc', q=q) }}">
+          <i class='bx bx-down-arrow-alt' ></i>
+        </a>
+      </th>
+      <th scope="col">
+        <i class='bx bxs-user-detail' ></i>
+        National Id
+        <a href="{{  url_for('views.searchPage',sortColumn='nationalId',sortOrder='asc', q=q) }}">
+          <i class='bx bx-up-arrow-alt' ></i>
+        </a>
+        <a href="{{  url_for('views.searchPage',sortColumn='nationalId',sortOrder='desc', q=q) }}">
+          <i class='bx bx-down-arrow-alt' ></i>
+        </a>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for customer in all_customers %}
+    <tr>
+      <td class="table-secondary">
+        <a class="searchLink" href="{{ url_for('views.customerProfile', id=customer.Id) }}">
+          {{ customer.Id }}
+          <i class='bx bxs-user-detail' ></i>
+        </a>
+      </td>
+      <td class="table-secondary">{{ customer.GivenName }} {{ customer.Surname }}</td>
+      <td class="table-secondary">{{ customer.Streetaddress }}</td>
+      <td class="table-secondary">{{ customer.City }}</td>
+      <td class="table-secondary">{{ customer.NationalId }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="buttons">
+  {% if has_prev %}
+  <div class="prev-button">
+    <!-- när vi gen page så skickar vi med sortcolumn och sortorder så dem värderna behålls -->
+    <a  class= "btn btn-secondary" href="{{ url_for('views.searchPage', page=page-1, sortColumn=sortColumn, sortOrder=sortOrder, q=q) }}">
+      Prev
+    </a>
+  </div>
+  {% endif %}
+
+  {% if has_next %}
+  <div class="next-button">
+    <!-- när vi gen page så skickar vi med sortcolumn och sortorder så dem värderna behålls -->
+    <a  class= "btn btn-secondary" href="{{ url_for('views.searchPage', page=page+1, sortColumn=sortColumn, sortOrder=sortOrder, q=q) }}">
+      Next
+    </a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

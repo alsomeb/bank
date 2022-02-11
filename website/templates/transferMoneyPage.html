@@ -1,0 +1,46 @@
+{% extends "baseTemplate.html" %}
+{% from "_formHelper.html" import render_field %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+<br/>
+<br/>
+<div class="returnLink">
+  <a class="cancel_deposit" href="{{ url_for('views.indexPage') }}">
+    <i class='bx bx-left-arrow-alt'></i>
+    Return to Dashboard
+  </a>
+<br/>
+<br/>
+</div>
+<div class="container-fluid">
+    <div class="row m-t-30">
+        <div class="col-md-12">
+            <form method="POST">
+                {{ form.csrf_token }}
+                <div class="card">
+                <div class="card-header">
+                    <strong>Transfer</strong> funds between accounts
+                </div>
+                <div class="card-body card-block">
+                  <!-- använt från funk "macro" -->
+                  {{ render_field(form.Sender) }}
+                  {{ render_field(form.Receiver) }}
+                  {{ render_field(form.Amount) }}
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-secondary btn-sm">
+                      <i class='bx bxs-wallet' ></i> Transfer
+                    </button>
+                </div>
+            </div>  
+        </form> 
+        </div>
+    </div>        
+</div>
+
+
+{% endblock %}

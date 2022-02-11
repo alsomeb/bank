@@ -1,0 +1,42 @@
+{% extends "baseTemplate.html" %}
+
+{% block title %}
+  Login
+{% endblock %}
+
+{% block content %}
+<form method="POST">
+    <!-- CSRF - Security -->
+    {{ form.hidden_tag() }}
+  <div class="form-group">
+      {{ form.email.label(class="form-control-label") }}
+      <!-- if form had errors on it , display errors, like if email was wrong, Bootstrap style-->
+      {% if form.email.errors %}
+        {{ form.email(class="form-control is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.email.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+      <!-- If no errors show nothing -->
+      {% else %}
+        {{ form.email(class="form-control") }}
+      {% endif %}
+  </div>
+  <div class="form-group">
+      {{ form.password.label(class="form-control-label") }}
+      {% if form.password.errors %}
+        {{ form.password(class="form-control is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.password.errors %}
+          <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+      {% else %} 
+        {{ form.password(class="form-control") }}
+      {% endif %}
+  </div>
+  <br />
+      {{ form.submit(class="btn btn-secondary") }}
+</form>
+{% endblock %}

@@ -1,0 +1,152 @@
+{% extends "baseTemplate.html" %}
+{% from "_formHelper.html" import render_field %}
+
+{% block title %}
+  {{ title }} {{ some_account.AccountType }}
+{% endblock %}
+
+{% block content %}
+<br/>
+<div class="returnLink">
+  <a class="cancel_deposit" href="{{ url_for('views.customerProfile', id=account_owner.Id) }}">
+    <i class='bx bx-left-arrow-alt'></i>
+    Return to your Accounts
+  </a>
+</div>
+
+<div class="account_owner">
+  {{ account_owner.GivenName }} {{ account_owner.Surname }}
+</div>
+<div class="account_type">Account type: {{ some_account.AccountType }}</div>
+<div class="current_balance">
+  <i class='bx bxs-wallet'></i>
+  Balance: {{ some_account.Balance }} USD
+</div>
+
+
+{% if not deposit_withdraw %}
+<div class="withdraw-deposit">
+  <a href="{{ url_for('views.accountProfile', id=some_account.Id, deposit_withdraw='active') }}">
+    <i class='bx bx-transfer'></i>
+    Withdraw Or Deposit</a>
+</div>
+{% endif %}
+
+{% if deposit_withdraw  %}
+<br/>
+<br/>
+<div class="container-fluid">
+    <div class="row m-t-30">
+        <div class="col-md-12">
+            <form method="POST">
+                {{ form.csrf_token }}
+                <div class="card">
+                <div class="card-header">
+                    <strong>Deposit/Withdraw</strong> funds
+                </div>
+                <div class="card-body card-block">
+                  <!-- använt från funk "macro" -->
+                  {{ render_field(form.Choice) }}
+                  {{ render_field(form.Amount) }}
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-secondary btn-sm">
+                      <i class='bx bxs-wallet' ></i> Done
+                    </button>
+                    <a class="cancel_deposit" href="{{ url_for('views.accountProfile', id=some_account.Id) }}">
+                      <i class='bx bx-x'></i>
+                      Cancel Deposit</a> 
+                </div>
+            </div>  
+        </form> 
+        </div>
+    </div>
+</div>
+<br/>
+<br/>
+{% endif %}
+
+<table class="table" id="posts-table">
+  <thead>
+    <tr>
+      <th scope="col">
+        <i class='bx bx-detail'></i>
+        Trans. Id</th>
+      <th scope="col">
+        <i class='bx bx-time'></i>
+        Date</th>
+      <th scope="col">
+        <i class='bx bx-detail'></i>
+        Type</th>
+      <th scope="col">
+        <i class='bx bx-detail'></i>
+        Operation</th>
+      <th scope="col">
+        <i class='bx bx-wallet' ></i>
+        Amount</th>
+      <th scope="col">
+        <i class='bx bx-wallet' ></i>
+        New Balance</th>
+      <th scope="col">
+        <i class='bx bx-detail'></i>
+        Account Id</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for transaction in trans %}
+    <tr>
+      <th scope="row">{{ transaction.Id }}</th>
+      <td>{{ transaction.Date }}</td>
+      <td>{{ transaction.Type }} </td>
+      <td>{{ transaction.Operation }} </td>
+      <td>{{ transaction.Amount }}</td>
+      <td>{{ transaction.NewBalance }}</td>
+      <td>{{ transaction.AccountId }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="trans mx-auto" id="trans">
+  <a id="transMore" class="btn btn-secondary mx-auto" href="javascript:fetchMore();">Show 20 more</a>
+</div>
+<br/>
+<br/>
+<br/>
+
+<script>
+  pageNo = 2;
+  hasMore = true;
+  
+  function fetchMore(){
+    url = "/api/{{ some_account.Id }}/trans?page=" + pageNo;
+    fetch(url)
+      .then((response)=>response.json())            
+      .then((json)=>{
+        hasMore = json[1]
+        // console.log(hasMore)
+        pageNo = pageNo + 1;
+        json[0].forEach(tableElement);
+        // hiding button if no more trans to show
+        if (hasMore == false) {
+          document.getElementById("transMore").style.visibility = "hidden";
+          document.getElementById("trans").innerHTML = 'No more transactions to show';
+        }
+      });
+    
+  }
+  function tableElement(element) {
+    document.querySelector('#posts-table tbody').innerHTML +=
+      `<tr>
+        <th scope="row">${element.Id}</th>
+        <td>${element.Date}</td>
+        <td>${element.Type}</td>
+        <td>${element.Operation}</td>
+        <td>${element.Amount}</td>
+        <td>${element.NewBalance}</td>
+        <td>${element.AccountId}</td>
+      </tr>`;
+      }
+
+</script>
+{% endblock %}

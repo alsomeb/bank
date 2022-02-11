@@ -1,0 +1,126 @@
+{% extends "baseTemplate.html" %}
+{% from "_formHelper.html" import render_field %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+<div class="returnLink">
+  <a class="cancel_deposit" href="{{ url_for('views.indexPage') }}">
+    <i class='bx bx-left-arrow-alt'></i>
+    Return to Dashboard
+  </a>
+</div>
+{% if add %}
+<br/>
+<br/>
+<div class="container-fluid">
+    <div class="row m-t-30">
+        <div class="col-md-12">
+            <form method="POST">
+                {{ form.csrf_token }}
+                <div class="card">
+                <div class="card-header">
+                    <strong>Add</strong> User
+                </div>
+                <div class="card-body card-block">
+                  <!-- använt från funk "macro" -->
+                  {{ render_field(form.GivenName) }}
+                  {{ render_field(form.Surname) }}
+                  {{ render_field(form.Role) }}
+                  {{ render_field(form.EmailAddress) }}
+                  {{ render_field(form.Password) }}
+                  {{ render_field(form.Confirm) }}
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-secondary btn-sm">
+                      Done
+                    </button>
+                    <a class="cancel_deposit" href="{{ url_for('views.userRolesPage') }}">
+                      <i class='bx bx-x'></i>
+                      Cancel</a> 
+                </div>
+            </div>  
+        </form> 
+        </div>
+    </div>
+</div>
+<br/>
+<br/>
+{% endif %}
+{% if edit %}
+<br/>
+<br/>
+<div class="container-fluid">
+    <div class="row m-t-30">
+        <div class="col-md-12">
+            <form method="POST">
+                {{ form.csrf_token }}
+                <div class="card">
+                <div class="card-header">
+                    <strong>Edit</strong> User
+                </div>
+                <div class="card-body card-block">
+                  <!-- använt från funk "macro" -->
+                  {{ render_field(form.GivenName) }}
+                  {{ render_field(form.Surname) }}
+                  {{ render_field(form.Role) }}
+                  {{ render_field(form.EmailAddress) }}
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-secondary btn-sm">
+                      Done
+                    </button>
+                    <a class="cancel_deposit" href="{{ url_for('views.userRolesPage') }}">
+                      <i class='bx bx-x'></i>
+                      Cancel</a> 
+                </div>
+            </div>  
+        </form> 
+        </div>
+    </div>
+</div>
+<br/>
+<br/>
+{% endif %}
+<br/>
+<br/>
+<a class="cancel_deposit" href="{{ url_for('views.userRolesPage', add='add') }}">
+  <i class='bx bx-male-female'></i>
+  Register New User</a>
+<br/>
+<h2 class="h2Start">Active Users</h2>
+<table class="table mx-auto">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">
+        <i class='bx bx-detail' ></i>
+        Id</th>
+      <th scope="col">
+        <i class='bx bx-detail' ></i>
+        Name</th>
+      <th scope="col">
+        <i class='bx bxs-user-detail' ></i>
+        Role</th>
+      <th scope="col">
+        <i class='bx bx-mail-send' ></i>
+        Email</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for UserRoles, User, Role in users %}
+    <tr>
+      <td>
+        <a class="searchLink" href="{{ url_for('views.userRolesPage', edit='edit', userId=User.id) }}">
+          <i class='bx bxs-edit-alt'></i>
+          {{ User.id }}
+        </a></td>
+      <td>{{ User.first_name }} {{ User.last_name }}</td>
+      <td>{{ Role.name }}</td>
+      <td>{{ User.email }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

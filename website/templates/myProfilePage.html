@@ -1,0 +1,70 @@
+{% extends "baseTemplate.html" %}
+{% from "_formHelper.html" import render_field %}
+
+{% block title %}
+  {{ title }} 
+{% endblock %}
+
+{% block content %}
+<h2 class="h2Start mx-auto">
+  Welcome <strong>{{ current_user.first_name }} {{ current_user.last_name }} </strong>
+  to your Profile Page
+</h2>
+<br/>
+<br/>
+<ul class="list-group bredd-auto">
+  <span class="mx-auto">
+    <i class='bx bxs-user-detail' ></i>
+    <Strong>Menu</Strong>
+  </span>
+  <li class="list-group-item">
+    <a class="myProfileLink" href="{{ url_for('user.change_password') }}">
+      <i class='bx bxs-edit-alt' ></i>
+      Change Password</a>
+  </li>
+  <li class="list-group-item">
+    <a class="myProfileLink" href="{{ url_for('user.edit_user_profile') }}">
+      <i class='bx bxs-edit-alt' ></i>
+      Edit First/Lastname</a>
+  </li>
+  <li class="list-group-item">
+    <a class="myProfileLink" href="{{ url_for('views.myProfile', email='active') }}">
+      <i class='bx bxs-edit-alt' ></i>
+      Change Email</a>
+  </li>
+</ul>
+
+{% if email %}
+<br/>
+<br/>
+<div class="container-fluid">
+    <div class="row m-t-30">
+        <div class="col-md-12">
+            <form method="POST">
+                {{ form.csrf_token }}
+                <div class="card">
+                <div class="card-header">
+                    <strong>Email Change</strong> 
+                </div>
+                <div class="card-body card-block">
+                  <!-- använt från funk "macro" -->
+                  {{ render_field(form.EmailAddress) }}
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-secondary btn-sm">
+                      Done
+                    </button>
+                    <a class="cancel_deposit" href="{{ url_for('views.myProfile') }}">
+                      <i class='bx bx-x'></i>
+                      Cancel</a> 
+                </div>
+            </div>  
+        </form> 
+        </div>
+    </div>
+</div>
+<br/>
+<br/>
+{% endif %}
+
+{% endblock %}

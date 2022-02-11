@@ -1,0 +1,139 @@
+{% extends "baseTemplate.html" %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+<h2 class="h2Start">Fake Bank</h2>
+<p class="pStart">Welcome to your Dashboard <strong>{{ current_user.first_name }} {{ current_user.last_name }}</strong></p>
+<br/>
+<br/>
+<form action="{{ url_for('views.indexPage') }}" method="POST">
+  <div class="input-group mx-auto" style="max-width: 58rem;">
+    <input type="number" name="customerId" min="1" id="customerId" class="form-control" placeholder="Fast Search Customer Id" aria-label="Customer Id" aria-describedby="basic-addon2">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="submit">Search
+        <i class='bx bx-search-alt-2'></i>
+      </button>
+    </div>
+  </div>
+</form>
+<br />
+<br />
+<br />
+<!-- mx-auto för centrering, bootstrap -->
+<div class='parentDashboard mx-auto'>
+  <div class='childDashboard'>
+    <div class="childDashboardHeader">
+      Sum Accounts
+    </div>
+    <div class="childDashboardBody">
+      {{ antalKonton }}
+    </div>
+  </div>
+  <div class='childDashboard'>
+    <div class="childDashboardHeader">
+      Sum Customers
+    </div>
+    <div class="childDashboardBody">
+      {{ antalKunder }}
+    </div>
+  </div>
+  <div class='childDashboard'>
+    <div class="childDashboardHeader">
+      Sum Balances USD
+    </div>
+    <div class="childDashboardBody">
+      {{ sumAccountsBalance }}
+    </div>
+  </div>
+</div>
+
+<table class="table mx-auto dashboard-table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">
+        <i class='bx bxs-flag' ></i>
+        Country</th>
+      <th scope="col">
+        <i class='bx bx-male-female' ></i>
+        Customers</th>
+      <th scope="col">
+        <i class='bx bxs-detail' ></i>
+        Accounts</th>
+      <th scope="col">
+        <i class='bx bxs-wallet' ></i>
+        Sum Balances</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for query1, query2 in result %}
+    <tr>
+      <td>
+        <a class="searchLink" href="{{ url_for('views.indexPage', topEarner='active', country=query2[0]) }}">
+          <i class='bx bx-link-alt' ></i>
+          {{ query2[0] }}
+        </a></td>
+      <td>{{ query2[1] }}</td>
+      <td>{{ query1[0] }}</td>
+      <td>{{ query1[1] }}, USD</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<br/>
+<br/>
+
+{% if topEarner %}
+<p class="mx-auto topEarners">
+  Top earners in {{ countryName }}
+</p>
+<table class="table mx-auto topEarnerTable">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">
+        <i class='bx bxs-user-detail'></i>
+        Customer Id</th>
+      <th scope="col">
+        <i class='bx bxs-user-detail'></i>
+        First Name</th>
+      <th scope="col">
+        <i class='bx bxs-user-detail'></i>
+        Last Name</th>
+      <th scope="col">
+        <i class='bx bxs-flag' ></i>
+        Country</th>
+      <th scope="col">
+        <i class='bx bxs-wallet' ></i>
+        Balance</th>
+      </tr>
+  </thead>
+  <tbody>
+    {% for customer, balance in sortedEarners %}
+    <tr>
+      <td>
+        <a class="searchLink" href="{{ url_for('views.customerProfile', id=customer.Id) }}">
+          {{ customer.Id }}
+          <i class='bx bxs-user-detail' ></i>
+        </a>
+      </td>
+      <td>{{ customer.GivenName }}</td>
+      <td>{{ customer.Surname }}</td>
+      <td>{{ customer.Country }}</td>
+      <td>{{ balance }}, USD</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<a class="cancel_deposit" href="{{ url_for('views.indexPage') }}">
+  Remove Table
+  <i class='bx bx-x'></i>
+</a>
+<br/>
+<br/>
+<br/>
+
+{% endif %}
+
+{% endblock %}

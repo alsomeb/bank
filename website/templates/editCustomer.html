@@ -1,0 +1,53 @@
+{% extends "baseTemplate.html" %}
+{% from "_formHelper.html" import render_field %}
+
+{% block title %}
+  {{ title }} {{ customer.GivenName }} {{ customer.Surname }}
+{% endblock %}
+
+{% block content %}
+<div class="returnLink">
+    <a class="cancel_deposit" href="{{ url_for('views.customerProfile', id=customer.Id) }}">
+      <i class='bx bx-left-arrow-alt'></i>
+      Return to {{ customer.GivenName }} {{ customer.Surname }}'s profile
+    </a>
+</div>
+<br/>
+<br/>
+<div class="container-fluid">
+    <div class="row m-t-30">
+        <div class="col-md-12">
+            <form method="POST">
+                {{ form.csrf_token }}
+                <div class="card">
+                <div class="card-header">
+                    <strong>Editing</strong> {{ customer.GivenName }} {{ customer.Surname }}
+                </div>
+                <div class="card-body card-block">
+                  <!-- använt från funk "macro" -->
+                        {{ render_field(form.GivenName) }}
+                        {{ render_field(form.Surname) }}
+                        {{ render_field(form.Streetaddress) }}
+                        {{ render_field(form.Birthday) }}
+                        {{ render_field(form.City) }}
+                        {{ render_field(form.Zipcode) }}
+                        {{ render_field(form.Country) }}
+                        {{ render_field(form.CountryCode)}}
+                        {{ render_field(form.NationalId) }}
+                        {{ render_field(form.TelephoneCountryCode) }}
+                        {{ render_field(form.Telephone) }}
+                        {{ render_field(form.EmailAddress) }}
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-secondary btn-sm">
+                      <i class='bx bxs-save' ></i> Save
+                    </button>
+                </div>
+            </div>  
+        </form>    
+        </div>
+    </div>        
+</div>
+
+
+{% endblock %}

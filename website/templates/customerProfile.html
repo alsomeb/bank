@@ -1,0 +1,83 @@
+{% extends "baseTemplate.html" %}
+
+{% block title %}
+  {{ title }} {{ customer.GivenName }} {{ customer.Surname }}
+{% endblock %}
+
+{% block content %}
+<h2> <i class='bx bx-detail'></i>{{ customer.GivenName }} {{ customer.Surname }}</h2>
+<a class="edit-customer" href="{{ url_for('views.editCustomerPage', id=customer.Id) }}">
+  <i class='bx bxs-edit-alt'></i>
+  Edit {{ customer.GivenName }} {{ customer.Surname }} information</a>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">
+        <i class='bx bxs-home' ></i>
+        Address</th>
+      <th scope="col">
+        <i class='bx bx-mail-send' ></i>
+        Email</th>
+      <th scope="col">
+        <i class='bx bx-mobile-alt' ></i>
+        Telephone</th>
+      <th scope="col">
+        <i class='bx bxs-user-detail' ></i>
+        National Id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{ customer.Streetaddress }},
+          {{ customer.City }},
+          {{ customer.Zipcode }},
+          {{ customer.Country }}
+      </td>
+      <td>
+        {{ customer.EmailAddress }}
+      </td>
+      <td>
+        {{ customer.Telephone }}
+      </td>
+      <td>
+        {{ customer.NationalId }}
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+{% for customer, account in accounts %}
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th>Account Nr</th>
+        <th>Account Type</th>
+        <th>Balance USD</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="table-secondary">
+          <!-- Parameter id på accountProfile funkntion-->
+          <a href="{{ url_for('views.accountProfile', id=account.Id) }}">
+            <button type="button" class="btn btn-secondary">
+              <i class='bx bxs-user-account' ></i>
+              {{ account.Id }}
+            </button>
+          </a>
+        </td>
+        <td class="table-secondary">
+          {{ account.AccountType }}
+        </td>
+        <td class="table-secondary">
+          {{ account.Balance }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+{% endfor %}
+
+<p class="totalAccount">Total in all accounts: {{ total }} USD</p>
+
+
+{% endblock %}

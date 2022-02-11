@@ -1,0 +1,123 @@
+{% extends "baseTemplate.html" %}
+
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+<br/>
+<br/>
+<div class="returnLink">
+  <a class="cancel_deposit" href="{{ url_for('views.indexPage') }}">
+    <i class='bx bx-left-arrow-alt'></i>
+    Return to Dashboard
+  </a>
+</div>
+<h2 class="h2Start">Azure Search Engine Page</h2>
+<form class="search_form" method="GET">
+  <div class="input-group">
+    <input type="text" name="q" id="q" class="form-control" value="{{ q }}" placeholder="Type...">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="submit">Azure Search
+        <i class='bx bx-search-alt-2'></i>
+      </button>
+    </div>
+  </div>
+</form>
+<p>
+  <strong>Showing page {{ page }} of {{ antalSidor }} </br> Results: {{ summaSearch }}</strong>
+</p>
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">
+        <i class='bx bx-detail' ></i>
+        Id
+        <!-- <a href="{{  url_for('views.azureSearch',sortColumn='Id',sortOrder='asc', q=q) }}">
+          <i class='bx bx-up-arrow-alt' ></i>
+        </a> -->
+        <!-- <a href="{{  url_for('views.azureSearch',sortColumn='Id',sortOrder='desc', q=q) }}">
+          <i class='bx bx-down-arrow-alt' ></i>
+        </a> -->
+      </th>
+      <th scope="col">
+        <i class='bx bx-detail' ></i>
+        Name
+        <a href="{{  url_for('views.azureSearch',sortColumn='GivenName',sortOrder='asc', q=q) }}">
+          <i class='bx bx-up-arrow-alt' ></i>
+        </a>
+        <a href="{{  url_for('views.azureSearch',sortColumn='GivenName',sortOrder='desc', q=q) }}">
+          <i class='bx bx-down-arrow-alt' ></i>
+        </a>
+      </th>
+      <th scope="col">
+        <i class='bx bx-home' ></i>
+        Address
+        <a href="{{  url_for('views.azureSearch',sortColumn='Streetaddress',sortOrder='asc', q=q) }}">
+          <i class='bx bx-up-arrow-alt' ></i>
+        </a>
+        <a href="{{  url_for('views.azureSearch',sortColumn='Streetaddress',sortOrder='desc', q=q) }}">
+          <i class='bx bx-down-arrow-alt' ></i>
+        </a>
+      </th>
+      <th scope="col">
+        <i class='bx bx-home' ></i>
+        City
+        <a href="{{  url_for('views.azureSearch',sortColumn='City',sortOrder='asc', q=q) }}">
+          <i class='bx bx-up-arrow-alt' ></i>
+        </a>
+        <a href="{{  url_for('views.azureSearch',sortColumn='City',sortOrder='desc', q=q) }}">
+          <i class='bx bx-down-arrow-alt' ></i>
+        </a>
+      </th>
+      <th scope="col">
+        <i class='bx bxs-user-detail' ></i>
+        National Id
+        <a href="{{  url_for('views.azureSearch',sortColumn='NationalId',sortOrder='asc', q=q) }}">
+          <i class='bx bx-up-arrow-alt' ></i>
+        </a>
+        <a href="{{  url_for('views.azureSearch',sortColumn='NationalId',sortOrder='desc', q=q) }}">
+          <i class='bx bx-down-arrow-alt' ></i>
+        </a>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for customer in alla %}
+    <tr>
+      <td class="table-secondary">
+        <a class="searchLink" href="{{ url_for('views.customerProfile', id=customer.Id) }}">
+          {{ customer.Id }}
+          <i class='bx bxs-user-detail' ></i>
+        </a>
+      </td>
+      <td class="table-secondary">{{ customer.GivenName }} {{ customer.Surname }}</td>
+      <td class="table-secondary">{{ customer.Streetaddress }}</td>
+      <td class="table-secondary">{{ customer.City }}</td>
+      <td class="table-secondary">{{ customer.NationalId }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="buttons">
+  {% if page > 1 %}
+  <div class="prev-button">
+    <!-- när vi gen page så skickar vi med sortcolumn och sortorder så dem värderna behålls -->
+    <a  class= "btn btn-secondary" href="{{ url_for('views.azureSearch', skip=skip-top, top=top, page=page-1, sortColumn=sortColumn, sortOrder=sortOrder, q=q) }}">
+      Prev
+    </a>
+  </div>
+  {% endif %}
+
+  {% if antalSidor > page %}
+  <div class="next-button">
+    <!-- när vi gen page så skickar vi med sortcolumn och sortorder så dem värderna behålls -->
+    <a  class= "btn btn-secondary" href="{{ url_for('views.azureSearch', skip=skip+top, top=top, page=page+1, sortColumn=sortColumn, sortOrder=sortOrder, q=q) }}">
+      Next
+    </a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
