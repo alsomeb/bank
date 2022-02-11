@@ -1,5 +1,5 @@
 from datetime import datetime
-from website.models import Transaction
+from website.models import Transaction, Account, Customer
 
 # Classes and functions used by website API
 class CustomerApiModel:
@@ -25,6 +25,22 @@ class TransactionApiModel:
   Amount = 0
   NewBalance = 0
   AccountId = 0
+
+class AccountApiModel:
+  Id = 0
+  AccountType = ""
+  Created = datetime.utcnow()
+  Balance = 0
+  CustomerId = 0
+
+def _mapAccountToApi(account)->AccountApiModel:
+  accountApiModel = AccountApiModel()
+  accountApiModel.Id = account.Id
+  accountApiModel.AccountType = account.AccountType
+  accountApiModel.Created = account.Created
+  accountApiModel.Balance = account.Balance
+  accountApiModel.CustomerId = account.CustomerId
+  return accountApiModel
 
 def _mapCustomerToApi(customer)->CustomerApiModel:
   customerApiModel = CustomerApiModel()
@@ -57,3 +73,11 @@ def _mapTransactionToApi(transaction)->TransactionApiModel:
 def getAllTransactionsByAccountId(id)->list[Transaction]:
   transactionList = Transaction.query.filter(Transaction.AccountId == id).order_by(Transaction.Date.desc()).all()
   return transactionList
+
+def getAllAccountsByCustomerId(id)->list[Account]:
+  accounts = Account.query.filter(Account.CustomerId == id).all()
+  return accounts
+
+def getCustomerById(id)->Customer:
+  customer = Customer.query.filter(Customer.Id == id).first()
+  return customer

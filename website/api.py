@@ -1,7 +1,8 @@
 from flask import Blueprint, request,jsonify
 from website.services import getAccountTransactions
-from website.models import Customer, Transaction
-from website.apiServices import _mapCustomerToApi, _mapTransactionToApi, getAllTransactionsByAccountId
+from website.apiServices import getAllAccountsByCustomerId, getCustomerById
+from website.models import Account, Customer, Transaction
+from website.apiServices import _mapCustomerToApi, _mapTransactionToApi, getAllTransactionsByAccountId, _mapAccountToApi
 
 api = Blueprint('api', __name__)
 
@@ -10,9 +11,15 @@ api = Blueprint('api', __name__)
 # Visa 1 spec customer
 @api.route("/api/customer/<id>")
 def getCustomer(id):
-  customer = Customer.query.filter(Customer.Id == id).first()
+  listOfAccounts = []
+  customer = getCustomerById(id)
   customerApiModel = _mapCustomerToApi(customer)
-  return jsonify(customerApiModel.__dict__)
+
+  accounts = getAllAccountsByCustomerId(id)
+  for account in accounts:
+    accountsApimodel = _mapAccountToApi(account)
+    listOfAccounts.append(accountsApimodel)
+  return jsonify(customerApiModel.__dict__, [account.__dict__ for account in listOfAccounts])
 
 @api.route("api/account/<id>")
 def getTrans(id):
