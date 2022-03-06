@@ -9,7 +9,7 @@ class ConfigDebug():
 
   # Flask-SQLAlchemy settings 
   # DBEAVER useSSL = TRUE när connect
-  SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://root:sparven23@localhost/bank' # File-Based SQL db
+  SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://root:yourpassword@localhost/bank' # File-Based SQL db
   # SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://alexdb:SparveN23@brundb.mysql.database.azure.com/bank' # File-Based SQL db
   SQLALCHEMY_TRACK_MODIFICATIONS = False    # Avoids SQLAlchemy warning
 
